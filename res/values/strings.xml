@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Assignment1</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="previous_image">Previous Image</string>
+    <string name="next_image">Next Image</string>
+    <string name="image_view">Image View</string>
+
+</resources>
