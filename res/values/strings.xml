@@ -7,5 +7,7 @@
     <string name="previous_image">Previous Image</string>
     <string name="next_image">Next Image</string>
     <string name="image_view">Image View</string>
+    <string name="toast_info_next">Loading next image</string>
+    <string name="toast_info_previous">Loading previous image</string>
 
 </resources>

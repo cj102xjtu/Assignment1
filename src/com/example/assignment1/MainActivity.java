@@ -1,31 +1,22 @@
 package com.example.assignment1;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.app.Activity;
-import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputFilter.LengthFilter;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
 	private ImageButton    o_previousImageButton = null;
 	private ImageButton    o_nextImageButton = null;
-	private ImageView      o_imageView = null;
-	
-	private AssetManager   o_assetManager = null;
-	private List<String>   o_imageNameList = null;
+	private ImageDisplayer o_imageDisplayer = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,52 +25,51 @@ public class MainActivity extends Activity {
         
         o_previousImageButton = (ImageButton) findViewById(R.id.previousImageButton);
         o_nextImageButton = (ImageButton) findViewById(R.id.nextImageButton);
-        o_imageView = (ImageView) findViewById(R.id.imageView);
-        o_assetManager = getAssets();
-        
+        o_imageDisplayer = new ImageDisplayer((ImageView) findViewById(R.id.imageView), getAssets() );
 
-        
-        // To get names of all files inside the folder
-        try {
-            o_imageNameList = Arrays.asList(o_assetManager.list(""));
-
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        
-        // set default image for image view
-        InputStream inStream = null;
-        try {
-            inStream = o_assetManager.open(o_imageNameList.get(0));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Drawable d = Drawable.createFromStream(inStream, null);
-        o_imageView.setImageDrawable(d);
         
         o_previousImageButton.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
-                
-                showAnotherImage(false);
+                o_imageDisplayer.showAnotherImage(false);
+            }
+            
+        });
+        
+        o_previousImageButton.setOnTouchListener(new OnTouchListener() {
+            
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(v == o_previousImageButton && event.getActionMasked() == MotionEvent.ACTION_DOWN )
+                {
+                    Toast.makeText(getApplicationContext(), R.string.toast_info_previous, Toast.LENGTH_SHORT).show();                
+                }
+                return false;
             }
         });
+        
         
         o_nextImageButton.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
-                showAnotherImage(true);
+                o_imageDisplayer.showAnotherImage(true);
                 
             }
         });
         
-
-        
-
+        o_nextImageButton.setOnTouchListener(new OnTouchListener() {
+            
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(v == o_nextImageButton && event.getActionMasked() == MotionEvent.ACTION_DOWN )
+                {
+                    Toast.makeText(getApplicationContext(), R.string.toast_info_next, Toast.LENGTH_SHORT).show();                    
+                }
+                return false;
+            }
+        });
         
     }
 
@@ -89,19 +79,5 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
-    
-    private void showAnotherImage(boolean bANext)
-    {
-        // test code
-        if(bANext)
-        {
-            Log.d("MainActivity", "show image hydrangeas" );
-//            o_imageView.setImageResource(R.drawable.hydrangeas);
-        }
-        else
-        {
-            Log.d("MainActivity", "show image jellyfish" );
-        }
-    }
-    
+
 }
